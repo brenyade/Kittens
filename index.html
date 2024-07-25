@@ -3,47 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kittens for Life</title>
+    <title>Himalayan Kittens</title>
     <style>
-        body {
-            background-image: url('https://cdn.pixabay.com/photo/2016/11/29/02/35/flower-1869167_960_720.jpg');
-            background-size: cover;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            color: white;
+        body, html {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
         }
-        .container {
-            margin-top: 20%;
+
+        .background {
+            background-image: url('https://source.unsplash.com/featured/?flowers');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
-        button {
+
+        #fetch-kittens {
             padding: 10px 20px;
             font-size: 16px;
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 5px;
             cursor: pointer;
         }
-        img {
+
+        #kittens-container {
             margin-top: 20px;
-            max-width: 100%;
-            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #kittens-container img {
+            max-width: 200px;
+            border: 2px solid #000000;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Kittens for Life</h1>
-        <button onclick="generateKitten()">Generate Himalayan Kitten</button>
-        <div id="kitten-container"></div>
+    <div class="background">
+        <button id="fetch-kittens">Get Himalayan Kittens</button>
+        <div id="kittens-container"></div>
     </div>
     <script>
-        function generateKitten() {
-            const kittenContainer = document.getElementById('kitten-container');
-            const kittenImage = document.createElement('img');
-            // Using a sample kitten image from a reliable placeholder service
-            kittenImage.src = 'https://placekitten.com/400/400';
-            kittenContainer.innerHTML = '';
-            kittenContainer.appendChild(kittenImage);
-        }
+        document.getElementById('fetch-kittens').addEventListener('click', async () => {
+            const container = document.getElementById('kittens-container');
+            container.innerHTML = '';
+
+            const response = await fetch('https://api.thecatapi.com/v1/images/search?breed_ids=hima&limit=5');
+            const data = await response.json();
+
+            data.forEach(imageData => {
+                const img = document.createElement('img');
+                img.src = imageData.url;
+                container.appendChild(img);
+            });
+        });
     </script>
 </body>
 </html>
